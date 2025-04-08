@@ -10,8 +10,8 @@ WORKDIR /app
 RUN mkdir /logs
 
 # 탐지 스크립트 복사
-COPY detector.py .
-COPY buildkit_version_check.py .
+COPY cve_2024_23651_detecter.py .
+COPY cve_2024_23651.py .
 
 # CMD에서 버전 확인 → 취약 시 실험 코드 실행
-CMD ["python", "buildkit_version_check.py"]
+CMD ["python", "cve_2024_23651.py"]
