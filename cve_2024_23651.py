@@ -1,48 +1,35 @@
-import os
-import threading
-import time
-import hashlib
+import subprocess
+import re
+import sys
 
-HOST_TARGET_PATH = "/hostroot/etc/passwd"  # 백신 컨테이너에 호스트를 바인드 마운트 해둘 것
-CACHE_MOUNT_PATH = "/mnt/cache"  # 공유 캐시 마운트 경로
-
-def try_access_host_file():
+def get_buildkit_version():
     try:
-        with open(HOST_TARGET_PATH, 'r') as f:
-            content = f.read()
-            checksum = hashlib.sha256(content.encode()).hexdigest()
-            print(f"[!] 호스트 파일 접근 성공 - SHA256: {checksum}")
-            with open("/logs/detected.txt", "w") as log:
-                log.write(f"[DETECTED] Host file accessed: {checksum}\n")
-    except Exception as e:
-        print(f"[x] 접근 실패: {e}")
+        result = subprocess.run(["buildkitd", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        output = result.stdout.strip()
+        match = re.search(r'v?(\d+)\.(\d+)\.(\d+)', output)
+        if match:
+            version = tuple(map(int, match.groups()))
+            print(f"[*] BuildKit 버전 감지됨: {version}")
+            return version
+        else:
+            print("[x] 버전 정보를 찾을 수 없음")
+            return None
+    except FileNotFoundError:
+        print("[x] buildkitd 명령어를 찾을 수 없습니다. 설치 여부를 확인하세요.")
+        return None
 
-def race_writer(thread_id):
-    for i in range(50):
-        try:
-            with open(f"{CACHE_MOUNT_PATH}/temp_{thread_id}.txt", 'w') as f:
-                f.write(f"Thread {thread_id}, iteration {i}\n")
-            time.sleep(0.01)
-        except Exception as e:
-            print(f"[x] 쓰기 에러 in Thread {thread_id}: {e}")
-
-def start_race_condition_simulation():
-    threads = []
-    for i in range(10):  # 10개의 쓰레드로 동시에 캐시마운트 접근
-        t = threading.Thread(target=race_writer, args=(i,))
-        threads.append(t)
-        t.start()
-
-    # 파일 접근 시도도 병렬로 진행
-    for i in range(3):
-        t = threading.Thread(target=try_access_host_file)
-        threads.append(t)
-        t.start()
-
-    for t in threads:
-        t.join()
+def is_vulnerable(version_tuple):
+    if version_tuple is None:
+        return False
+    # 취약한 버전: 0.12.5 미만
+    return version_tuple < (0, 12, 5)
 
 if __name__ == "__main__":
-    print("[*] Race Condition 시뮬레이션 시작")
-    start_race_condition_simulation()
-    print("[*] 완료")
+    version = get_buildkit_version()
+    if is_vulnerable(version):
+        print("[!] 취약한 BuildKit 버전이 감지되었습니다. 실험을 진행합니다.\n")
+        # 여기서 레이스 컨디션 탐지 로직을 불러오거나 실행
+        import cve_2024_23651_detector  # detector.py에 race condition 실험 코드 작성해두기
+    else:
+        print("[*] 안전한 BuildKit 버전입니다. 실험을 중단합니다.")
+
