@@ -12,6 +12,7 @@ def try_access_host_file():
             content = f.read()
             checksum = hashlib.sha256(content.encode()).hexdigest()
             print(f"[!] 호스트 파일 접근 성공 - SHA256: {checksum}")
+            os.makedirs("/logs", exist_ok=True)
             with open("/logs/detected.txt", "w") as log:
                 log.write(f"[DETECTED] Host file accessed: {checksum}\n")
     except Exception as e:

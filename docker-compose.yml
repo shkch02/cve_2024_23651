@@ -1,13 +1,13 @@
-version: "3.9"
+version: "3.8"
 
 services:
-  cve-detector:
+  buildkit_cve_checker:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: buildkit_cve_checker
     volumes:
-      - /etc:/hostroot/etc:ro            # 호스트 /etc 파일 접근용
-      - ./fake-cache:/mnt/cache          # 캐시 마운트 시뮬레이션
-      - ./logs:/logs                     # 탐지 로그 저장
-    restart: "no"
+      - /:/hostroot:ro           # 호스트 루트 readonly 바인드 마운트
+      - ./cache:/mnt/cache       # 캐시 마운트 시뮬레이션용 디렉토리
+      - ./logs:/logs             # 로그 출력 경로 공유
+
