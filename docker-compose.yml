@@ -1,13 +1,10 @@
-version: "3.8"
-
 services:
   buildkit_cve_checker:
+    container_name: buildkit_cve_checker
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: buildkit_cve_checker
     volumes:
-      - /:/hostroot:ro           # 호스트 루트 readonly 바인드 마운트
-      - ./cache:/mnt/cache       # 캐시 마운트 시뮬레이션용 디렉토리
-      - ./logs:/logs             # 로그 출력 경로 공유
-
+      - ./logs:/logs                          # 로그를 로컬로 저장
+      - /var/lib/docker/buildkit:/mnt/cache  # BuildKit 캐시 경로 마운트 (공격 벡터)
+      - /etc:/hostroot/etc:ro                # 민감 파일 바인드 (탐지 목적)
+    restart: no
