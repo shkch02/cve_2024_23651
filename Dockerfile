@@ -12,4 +12,4 @@ RUN mkdir /logs
 COPY cve_2024_23651_justSimulator.py .
 
 # 실행
-CMD ["python", "cve_2024_23651_exploit_simulator.py"]
+CMD ["python", "cve_2024_23651_justSimulator.py"]
