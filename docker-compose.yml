@@ -6,5 +6,5 @@ services:
     volumes:
       - ./logs:/logs                          # 로그를 로컬로 저장
       - /var/lib/docker/buildkit:/mnt/cache  # BuildKit 캐시 경로 마운트 (공격 벡터)
-    
-    restart: no
+      #- /etc:/hostroot/etc:ro 해당 코드 실행시 격리헤제됨
+    restart: "no"

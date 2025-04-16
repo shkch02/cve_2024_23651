@@ -4,3 +4,9 @@
 [2025-04-09T12:04:08.207877] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
 [2025-04-09T12:04:08.208059] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
 [2025-04-09T12:04:08.208259] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
+[2025-04-16T05:44:18.520070] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
+[2025-04-16T05:44:18.519933] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
+[2025-04-16T05:44:18.519849] [x] 호스트 파일 접근 실패 - 이유: [Errno 2] No such file or directory: '/hostroot/etc/passwd'
+[2025-04-16T06:14:13.329619] [!] 호스트 파일 접근 성공 - SHA256: 603e26a201f33730603604a120ca548d6a04b1f6d8bedda05d12e6007f58a245
+[2025-04-16T06:14:13.329859] [!] 호스트 파일 접근 성공 - SHA256: 603e26a201f33730603604a120ca548d6a04b1f6d8bedda05d12e6007f58a245
+[2025-04-16T06:14:13.330023] [!] 호스트 파일 접근 성공 - SHA256: 603e26a201f33730603604a120ca548d6a04b1f6d8bedda05d12e6007f58a245
